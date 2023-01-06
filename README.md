@@ -3,9 +3,7 @@ This is a scraper application in python used to scrape the year constructed data
 
 ## Libraries used:
 
-Beautiful Soup
-
-Selenium
+Beautiful Soup and Selenium
 
 
 Data is scraped from the following websites:
