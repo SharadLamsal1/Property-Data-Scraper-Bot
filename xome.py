@@ -57,6 +57,7 @@ def xomeConstruction(state, city, street, buildingNum, zip, original_address, di
     cityURL = '-'.join(map(str, city))
 
     url = f"https://www.xome.com/realestate/{state}/{cityURL}/{zip}/StreetList/"
+    # print(url)
 
     html_text = requests.get(url, verify=False).text
     soup = BeautifulSoup(html_text, 'html.parser')
@@ -81,6 +82,7 @@ def xomeConstruction(state, city, street, buildingNum, zip, original_address, di
             new_url = f"https://www.xome.com/{item['href']}"
             break
 
+    print(new_url)
     check_single = find_year(new_url)
     if (check_single != 0):
         print(f"XOME\t\t:{check_single}")
@@ -130,5 +132,5 @@ def xomeConstruction(state, city, street, buildingNum, zip, original_address, di
             print(
                 f"XOME\t\t: {result}")
         else:
-            print("XOME\t\t: Not found ")
+            print("XOME\t\t: Not found")
             return

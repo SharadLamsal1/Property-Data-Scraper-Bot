@@ -1,4 +1,4 @@
-from selenium_scraping import neighbour_construction, spokeo_construction, been_verified
+from selenium_scraping import neighbour_construction, spokeo_construction,propertyShark
 from ownerly import ownerlyConstruction
 from xome import xomeConstruction
 
@@ -6,7 +6,7 @@ from xome import xomeConstruction
 def init():
     print("\n\tYEAR BUILT BOT")
     print("-----------------------------------------------------------------------\n")
-    input_address = input('Enter the address to be scraped:').upper().replace(",", "")
+    input_address = input('Enter the address :').upper().replace(",", "")
     addressList = input_address.split()
 
     if (addressList[-1] == "STATES" and addressList[-2] == "UNITED"):
@@ -60,20 +60,23 @@ def init():
                             direction, dir_status)
     except:
         print("SPOKEO: ERROR")
-
     try:
-        been_verified(state, street, city, buildingNum,
-                      direction, dir_status)
+        propertyShark(input_address)
     except:
-        print("BEEN VERIFIED: ERROR")
+        print("PROPERTY SHARK: ERROR")
+
+    # try:
+    #     been_verified(state, street, city, buildingNum,
+    #                   direction, dir_status)
+    # except:
+    #     print("BEEN VERIFIED: ERROR")
 
     try:
         xomeConstruction(state, city, street, buildingNum,
-                     zip, original_list, dir_status, direction)
+                         zip, original_list, dir_status, direction)
     except:
         print("XOME: ERROR")
 
-   
     print("\n-----------------------------------------------------------------------\n")
 
 
@@ -81,4 +84,7 @@ while True:
     init()
 
     print("-----------------------------------------------------------------------\n")
-   
+    # choice = input("Enter Y to check another address, N to exit: ")
+    # if (choice == 'N'):
+    #     break
+    # print("-----------------------------------------------------------------------\n")

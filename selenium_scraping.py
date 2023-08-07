@@ -3,6 +3,7 @@ import sys
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+import time
 #from chromeVersion import get_chrome_version
 # os.environ['PATH'] += r"/Selenium drivers"
 
@@ -67,21 +68,37 @@ def neighbour_construction(state, street, city, buildingNum, direction, dir_stat
 
 
 def spokeo_connect():
+    
     property_card = driver.find_elements(By.CLASS_NAME, 'summary-details')
     if len(property_card) > 0:
         property_list = property_card[0].text.split("\n")
+        # print(property_list)
         for item in property_list:
-            if item == "YEAR BUILT":
+            if item == "Year Built":
                 index = property_list.index(item)
                 year_constructed_spokeo = property_list[index+1]
-                print(f"SPOEKO\t\t: {year_constructed_spokeo}")
+                print(f"SPOKEO\t\t: {year_constructed_spokeo}")
                 driver.quit()
                 return 1
     return 0
+    # property_card = driver.find_elements(By.CLASS_NAME, 'e3nj0sk0')
+    # if len(property_card) > 0:
+    #     year = property_card[0].text.split("\n")
+    #     print(year)
+    #     if year.upper == "YEAR BUILT":
+    #         year_constructed_spokeo=driver.find_element(By.CLASS_NAME,'e4pkwgj0').text
+    #         print(f"SPOEKO\t\t: {year_constructed_spokeo}")
+    #         driver.quit()
+    #         return 1
+    # return 0
 
 
 def spokeo_construction(state, street, city, buildingNum, direction, dir_status):
 
+    for i in range(len(city)):
+        city[i] = city[i].capitalize()
+    for i in range(len(street)):
+        street[i] = street[i].capitalize()
     city_url = '-'.join(map(str, city))
     street_url = '-'.join(map(str, street))
     if dir_status == 1:
@@ -157,6 +174,37 @@ def been_verified(state, street, city, buildingNum, direction, dir_status):
         else:
             break
 
-    print("BEEN VERIFIED\t: Not found ")
+    print("BEEN VERIFIED\t: Not found")
     driver.quit()
     return
+
+
+def propertyShark(input_address):
+
+    initDriver()
+    url ="https://www.propertyshark.com/mason/"
+    driver.get(url)
+
+    
+    search_bar =driver.find_element(By.ID,'search_token_address')
+    search_bar.send_keys(input_address)
+    time.sleep(3)
+    try:
+        autocomp = driver.find_elements(By.CLASS_NAME,'autocomplete-property')
+        autocomp[0].click()
+    except:
+        print("PROPERTY SHARK  : Not Found")
+        driver.quit()
+        return 0
+   
+    try:
+        year_data= driver.find_element(By.XPATH,'//*[@id="nationwide/property_details_content"]/div/div[2]/table/tbody/tr[5]/td[1]')
+        year=driver.find_element(By.XPATH,'//*[@id="nationwide/property_details_content"]/div/div[2]/table/tbody/tr[5]/td[2]').text
+        print(f"PROPERTY SHARK  : {year}")
+        driver.quit()
+        return 1
+    except:
+        print("PROPERTY SHARK  : Not Found")
+        driver.quit()
+        return 0
+
